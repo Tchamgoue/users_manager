@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -17,7 +19,36 @@ class UserController extends Controller
         $users = User::all();
         return $users;
     }
+    
+    public function login(Request $request){
+        //le validateur se rassure que le champs email est conforme et que password est renseigné 
+        $validator = Validator::make($request->all(), [
+            'email' => 'bail|required|email',
+            'password' => 'bail|required',
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json(array(
+                'message' => 'Sorry, Something wrong with your request!',
+                'error' => $errors,
+            ), 400);
+        }
 
+        $email = $request->email;
+        $password = $request->password;
+
+        
+        if(Auth::attempt(['email' => $email, 'password' => $password])){
+            $user = Auth::user();
+            $token = $user->createToken('SecretKey')->accessToken;
+            return response()->json(['token' => $token, 'user'=> $user], 200);
+        }
+        else{
+            return response()->json(['error'=>'Unauthorised'], 401);
+        } 
+    
+
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -26,7 +57,29 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = User::create($request->all());
+
+        /* Le validateur se rassure que le champs requit est renseigné dans la requête et qu'il nY existe pas dans la BD
+         un attribut sensé être unique qui porte le même nom*/
+        $validator = Validator::make($request->all(), [
+            'group_id' => 'bail|required|numeric',
+            'last_name' => 'bail|required|max:25',
+            'email' => 'bail|required|email',
+            'gender' => 'bail|required|alpha',
+            'phone' => 'bail|required',
+            'password' => 'bail|required',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json(array(
+                'message' => 'Sorry, Something wrong with your request!',
+                'error' => $errors,
+            ), 400);
+        }
+        // les données de la requête sont valides
+        $input = $request->all();
+        $input['password'] = bcrypt($input['password']); 
+        $user = User::create($input);
         return response()->json($user, 201);
     }
 
@@ -53,6 +106,27 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'group_id' => 'bail|required|numeric',
+            'last_name' => 'bail|required|max:25',
+            'email' => 'bail|required|email',
+            'gender' => 'bail|required|alpha',
+            'phone' => 'bail|required',
+            'password' => 'bail|required',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json(array(
+                'message' => 'Sorry, Something wrong with your request!',
+                'error' => $errors,
+            ), 400);
+        }
+        
+        //chiffrement du mot de passe
+        $input = $request->all();
+        $input['password'] = bcrypt($input['password']);
+    
         $user = User::findOrFail($id);
         $user->update($request->all());
 
