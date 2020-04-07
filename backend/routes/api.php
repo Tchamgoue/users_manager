@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,15 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+/*Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
-});
+});*/
+
+Route::post('/login', 'UserController@login');
+//Route::post('register', 'API\UserController@register');
 
 Route::get('/groups', 'GroupController@index');
 Route::get('/groups/{id}', 'GroupController@show');
 Route::post('/groups', 'GroupController@store');
 Route::post('/groups/{id}', 'GroupController@update');
-Route::delete('groups/{id}', 'GroupController@destroy');
+Route::delete('/groups/{id}', 'GroupController@destroy');
 
 Route::get('groups/{id}/users', 'GroupController@getUsers');
 
