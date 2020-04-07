@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('avatar');
             $table->boolean('active');
             $table->string('password');
+            $table->foreign('group_id') ->references('id')->on('groups') ->onDelete('cascade');
             $table->timestamps();
         });
     }
