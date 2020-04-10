@@ -1,0 +1,39 @@
+<p>users works!</p>
+<input type="text" [(ngModel)]="last_name" placeholder=" Nom" class="form-control"><br>
+<input type="text" [(ngModel)]="first_name" placeholder=" Prénom"><br>
+<input type="text" [(ngModel)]="email" placeholder="Email"><br>
+<input type="text" [(ngModel)]="phone" placeholder="Téléphone"><br>
+<input type="password" [(ngModel)]="password" placeholder="Mot de passe"><br>
+<input type="text" [(ngModel)]="gender" placeholder="Sexe"><br>
+<input type="number" [(ngModel)]="group_id" placeholder="Groupe utilisateur"><br>
+
+<button (click)="ajouter()" [disabled]="loadingAddUser===true">{{ loadingAddUser === true ? 'Loading...'  :  'Ajouter user' }}</button>
+<button (click)="getUsers()" [disabled]="loadingUsers===true">{{ loadingUsers === true ? 'Loading...'  :  'Users' }}</button>
+<br>
+<div *ngFor="let user of users">
+    {{user.id}} 
+    <br><strong>{{user.email}}</strong> 
+    <br> {{user.first_name}} 
+    <br> {{user.phone}}
+    <br> {{user.active}}
+    <br> {{user.group_id}}
+    <br> {{user.created_at}}
+    <br> {{user.updated_at}}
+    <br>
+    <button (click)="supprimerUser(user)" class="btn btn-primary" [disabled]="loadingDeleteUser===true">{{ loadingDeleteUser === true ? 'Loading...'  :  'Supprimer' }}</button>
+
+    <button (click)="modifierUser(user)" [disabled]="loadingUpdateUser===true">Modifier</button>
+    <button (click)="validerModif(user)" [disabled]="loadingUpdateUser===true">{{ loadingUpdateUser === true ? 'Loading...'  :  'Valider Modif' }}</button>
+    <hr>
+</div>
+<br>
+<button (click)="getGroups()" [disabled]="loadingGroups===true">{{ loadingGroups === true ? 'Loading...'  :  'Groupes' }}</button>
+<div *ngFor="let group of groups">
+    {{group.id}} <br><strong>{{group.name}}</strong> <br> {{group.description}} <br>
+    <button (click)="supprimerGroupe(group.id)" [disabled]="loadingDeleteGroup===true">{{ loadingDeleteGroup === true ? 'Loading...'  :  'Supprimer' }}</button>
+    <hr>
+</div>
+<br>
+<input type="text" [(ngModel)]="name" placeholder="Name">
+<input type="text" [(ngModel)]="description" placeholder="Description">
+<button (click)="ajouterGroup()" [disabled]="loadingAddGroup===true">{{ loadingAddGroup === true ? 'Loading...'  :  'Ajouter Group' }}</button>
