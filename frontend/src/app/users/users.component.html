@@ -1,0 +1,66 @@
+<div class="content">
+    <div class="col-md-12 mt-2">
+        Liste des Utilisateurs
+    </div>
+    <div class="row">
+        <button class="btn-success btn" routerLink="/add-user">Nouveau</button>
+    </div>
+
+    <div class="row">
+        <div [class]="viewUser || editUser ? 'col-md-8 mt-4': 'col-md-12 mt-4'">
+            <div class="row list-container">
+                <div [class]="viewUser || editUser ? 'col-md-4' : 'col-md-3'" *ngFor="let user of users" (click)="afficherUser(user)">
+                    <div [class]="selectedUser && selectedUser.id === user.id ? 'user-item selected' : 'user-item'">
+                        <div class="col-md-12" class="item-image">
+                            <img [src]="user.gender === 'F' ? 'https://www.jcc-brooklyn.org/windsor-terrace/wp-content/uploads/sites/5/2018/05/girl_icon.jpg' : 'https://www.cando.org/wp-content/uploads/2014/11/Facebook-no-profile-picture-icon-620x389-e1416282288251.jpg'" class="item-avatar">
+                        </div>
+                        <div class="pl-3 pr-3 item-description">
+                            <span class="h5">{{ user.first_name }} {{  user.last_name}}</span><br>
+                            <span class="subtitle">{{ user.email }}</span><br>
+                            <span class="subtitle">{{ getUserGroup(user.group_id).name.toUpperCase() }} | {{ user.active == 0 ? 'désactivé': 'activé' }}</span><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 user-details mt-5" *ngIf="viewUser || editUser">
+            <div class="row mt-1">
+                <div class="col-auto mr-auto">Details de l'utilisateur</div>
+                <div class="col-auto"><a href="#" (click)="viewUser = false" class="close-btn">Fermer</a></div>
+            </div>
+            <hr>
+            <div class="row center-box">
+                <img [src]="selectedUser.gender === 'F' ? 'https://www.jcc-brooklyn.org/windsor-terrace/wp-content/uploads/sites/5/2018/05/girl_icon.jpg' : 'https://www.cando.org/wp-content/uploads/2014/11/Facebook-no-profile-picture-icon-620x389-e1416282288251.jpg'" class="selected-item-avatar">
+            </div>
+            <div class="row h5 center-box mt-4">
+                {{ selectedUser.first_name }} {{  selectedUser.last_name}}
+            </div>
+            <div class="row center-box">
+                <span class="subtitle">{{ getUserGroup(selectedUser.group_id).name.toUpperCase() }} | {{ selectedUser.active == 0 ? 'désactivé': 'activé' }}</span>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <span class="subtilte">Tel:</span>
+                </div>
+                <div class="col-md-8">
+                    <span class="subtilte">{{selectedUser.phone}}</span>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <span class="subtilte">Email:</span>
+                </div>
+                <div class="col-md-8">
+                    <span class="subtilte">{{selectedUser.email}}</span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <button class="btn btn-success" style="width: 100%;">Editer</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
