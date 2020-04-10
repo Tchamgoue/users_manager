@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Group;
+use Illuminate\Support\Facades\Validator;
 
 class GroupController extends Controller
 {
@@ -26,7 +27,6 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        // validation des champs de la BD
         $validator = Validator::make($request->all(), [
             'name' => 'bail|required|unique:groups|alpha',
             'description' => 'max:255',
@@ -40,7 +40,6 @@ class GroupController extends Controller
             ), 400);
 
         }
-
 
         $group = Group::create($request->all());
         return response()->json($group, 201);
@@ -67,7 +66,6 @@ class GroupController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // validation des champs de la BD
         $validator = Validator::make($request->all(), [
             'name' => 'bail|required|unique:groups|alpha',
             'description' => 'max:255',
@@ -76,9 +74,9 @@ class GroupController extends Controller
         if ($validator->fails()) {
             $errors = $validator->errors();
             return response()->json(array(
-            'message' => 'Something wrong with your request !',
-            'error' => $errors,
-        ), 400);
+                'message' => 'Something wrong with your request !',
+                'error' => $errors,
+            ), 400);
 
         }
 

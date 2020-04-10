@@ -21,7 +21,6 @@ class UserController extends Controller
     }
     
     public function login(Request $request){
-        //le validateur se rassure que le champs email est conforme et que password est renseigné 
         $validator = Validator::make($request->all(), [
             'email' => 'bail|required|email',
             'password' => 'bail|required',
@@ -29,7 +28,7 @@ class UserController extends Controller
         if ($validator->fails()) {
             $errors = $validator->errors();
             return response()->json(array(
-                'message' => 'Sorry, Something wrong with your request!',
+                'message' => 'Something wrong with your request!',
                 'error' => $errors,
             ), 400);
         }
@@ -72,7 +71,7 @@ class UserController extends Controller
         if ($validator->fails()) {
             $errors = $validator->errors();
             return response()->json(array(
-                'message' => 'Sorry, Something wrong with your request!',
+                'message' => 'Something wrong with your request!',
                 'error' => $errors,
             ), 400);
         }
@@ -118,15 +117,14 @@ class UserController extends Controller
         if ($validator->fails()) {
             $errors = $validator->errors();
             return response()->json(array(
-                'message' => 'Sorry, Something wrong with your request!',
+                'message' => 'Something wrong with your request!',
                 'error' => $errors,
             ), 400);
+
         }
-        
-        //chiffrement du mot de passe
+
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
-    
         $user = User::findOrFail($id);
         $user->update($request->all());
 
