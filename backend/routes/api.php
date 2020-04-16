@@ -20,6 +20,11 @@ use Illuminate\Http\Request;
 Route::post('/login', 'UserController@login')->middleware('App\Http\Middleware\Cors');
 //Route::post('register', 'API\UserController@register');
 
+// Protection des routes. Toutes les routes à protéger par authentification vont dans ce groupe
+Route::group(['middleware' => 'auth:api'], function(){
+    Route::get('/userinfos', 'UserController@infos')->middleware('App\Http\Middleware\Cors');
+});
+
 Route::get('/groups', 'GroupController@index')->middleware('App\Http\Middleware\Cors');
 Route::get('/groups/{id}', 'GroupController@show')->middleware('App\Http\Middleware\Cors');
 Route::post('/groups', 'GroupController@store')->middleware('App\Http\Middleware\Cors');

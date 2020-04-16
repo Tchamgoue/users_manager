@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +9,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  public email = "";
+  public password = "";
+
+  constructor(private authService: AuthService,  private router: Router) { }
 
   ngOnInit(): void {
+  }
+
+  login() {
+    if (this.email.trim() === "" && this.password === "") return;
+    this.authService.login(this.email, this.password).then((result: any) => {
+      const user = result.user;
+      const token = result.token;
+      this.authService.setAuthUser(user);
+      sessionStorage.setItem("token", JSON.stringify(token));
+      this.router.navigate(['']); // redirection si l'utilisateur est authentifié
+    });
   }
 
 }

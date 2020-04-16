@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../user.service';
 import { GroupService } from '../group.service';
+import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -34,9 +36,15 @@ export class HomeComponent implements OnInit {
   password = "";
   active = 1;
 
-  constructor(private userService: UserService, private groupService: GroupService) {}
+  public authUser = null;
+
+  constructor(private userService: UserService, private groupService: GroupService, 
+              private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
+    if (!this.authService.isAuthenticated())
+      this.router.navigate(['login']); // redirection si l'utilisateur n'est pas authentifié
+    else this.authUser = this.authService.authUser;
   }
 
   getGroups() {

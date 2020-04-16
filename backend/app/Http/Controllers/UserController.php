@@ -48,6 +48,16 @@ class UserController extends Controller
     
 
     }
+
+    public function infos()
+    {
+        $user = Auth::user();
+        return response()->json(array(
+            'success' => true,
+            'data' => $user
+        ), 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
