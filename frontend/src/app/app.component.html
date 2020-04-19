@@ -5,6 +5,7 @@
       <ul>
         <li><a href="#" routerLink="/">Accueil</a></li>
         <li><a href="#" routerLink="/users">Utilisateurs</a></li>
+        <li *ngIf="authService.isAuthenticated() === true"><a href="#" (click)="logout()"> <span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
       </ul>
     </nav>
   </div>

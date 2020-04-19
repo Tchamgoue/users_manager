@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../user.service';
 import { GroupService } from '../group.service';
+import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-users',
@@ -20,11 +22,15 @@ export class UsersComponent implements OnInit {
   public selectedUser = null;
 
 
-  constructor(private userService: UserService, private groupService: GroupService) {}
+  constructor(private userService: UserService, private groupService: GroupService, private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.getGroups();
-    this.getUsers();
+    if (!this.authService.isAuthenticated())
+      this.router.navigate(['login']); // redirection si l'utilisateur n'est pas authentifié
+    else {
+      this.getGroups();
+      this.getUsers();
+    }
   }
 
   getGroups(): void {

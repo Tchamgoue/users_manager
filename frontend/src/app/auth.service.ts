@@ -9,7 +9,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthService {
-  public headers = new HttpHeaders();
+  public headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
   public options: any = {};
   public authUser = null;
   constructor(private _http: HttpClient) { }
@@ -20,26 +20,28 @@ export class AuthService {
 
   }
 
-  login(email: string, password: string): Promise<any> {
-     let body = new URLSearchParams();
-     body.set('email', email);
-     body.set('password', password);
-     /*this.setHeaders('Content-Type', 'application/x-www-form-urlencoded')
-     let request = this._http.post("http://localhost:8000/api/login", body.toString(),this.options).pipe(
-       catchError(this.handleError)
-     );
-     return request;*/
+  login(email: string, password: string) {
+    let body = new URLSearchParams();
+    body.set('email', email);
+    body.set('password', password);
+    this.setHeaders('Content-Type', 'application/x-www-form-urlencoded')
+    console.log(this.options);
+    console.log(this.headers);
+    let request = this._http.post("http://localhost:8000/api/login", body.toString(), this.options).pipe(
+      catchError(this.handleError)
+    );
+    return request;
 
     /*const param = new HttpParams();
     param.set('email', email);
-    param.set('password', password);*/
+    param.set('password', password);
     console.log(email, password);
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/x-www-form-urlencoded')
     headers.set('Accept', 'application/json')
     headers.set('Access-Control-Allow-Origin', '*')
     return this._http.post("http://localhost:8000/api/login", body.toString(), {headers} ).toPromise().then(response => 
-    console.log(response))
+    console.log(response))*/
   }
 
   public setAuthUser(user) {
@@ -48,7 +50,15 @@ export class AuthService {
 
   public isAuthenticated() {
     const token = sessionStorage.getItem('token');
-    return token ? true : false;
+    const userString = sessionStorage.getItem('user');
+    const user = JSON.parse(userString);
+    this.setAuthUser(user);
+    if (token !== null && token !== undefined && token !== '' && this.authUser !== null && this.authUser !== undefined) {
+      return true;
+    } else {
+      return false;
+    }
+  
   }
 
   private handleError(errorResponse: HttpErrorResponse) {

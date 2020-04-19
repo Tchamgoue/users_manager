@@ -19,11 +19,12 @@ export class LoginComponent implements OnInit {
 
   login() {
     if (this.email.trim() === "" && this.password === "") return;
-    this.authService.login(this.email, this.password).then((result: any) => {
+    this.authService.login(this.email, this.password).subscribe((result: any) => {
       const user = result.user;
       const token = result.token;
       this.authService.setAuthUser(user);
       sessionStorage.setItem("token", JSON.stringify(token));
+      sessionStorage.setItem("user", JSON.stringify(user));
       this.router.navigate(['']); // redirection si l'utilisateur est authentifié
     });
   }

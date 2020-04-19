@@ -11,7 +11,7 @@
             <div class="row list-container">
                 <div [class]="viewUser || editUser ? 'col-md-4' : 'col-md-3'" *ngFor="let user of users" (click)="afficherUser(user)">
                     <div [class]="selectedUser && selectedUser.id === user.id ? 'user-item selected' : 'user-item'">
-                        <div class="col-md-12" class="item-image">
+                        <div class="col-md-12 item-image">
                             <img [src]="user.gender === 'F' ? 'https://www.jcc-brooklyn.org/windsor-terrace/wp-content/uploads/sites/5/2018/05/girl_icon.jpg' : 'https://www.cando.org/wp-content/uploads/2014/11/Facebook-no-profile-picture-icon-620x389-e1416282288251.jpg'" class="item-avatar">
                         </div>
                         <div class="pl-3 pr-3 item-description">
